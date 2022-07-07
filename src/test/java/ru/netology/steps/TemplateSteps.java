@@ -25,20 +25,22 @@ public class TemplateSteps {
 
     @Когда("пользователь переводит {string} рублей с карты с номером {string} на свою \"{int}\" карту с главной страницы")
     public void transferMoneyToOwnCard(String amount, String string2, int cardId) {
-        int firstCardBalance = DashboardPage.getFirstCardBalance();
-        int secondCardBalance = DashboardPage.getSecondCardBalance();
-        var transferPage = DashboardPage.firstCard();
+        val dashboardPage = new DashboardPage();
+        int firstCardBalance = dashboardPage.getFirstCardBalance();
+        int secondCardBalance = dashboardPage.getSecondCardBalance();
+        var transferPage = dashboardPage.firstCard();
         String string3 = string2.replace(" ","");
         transferPage.transferCard(new Data.CardInfo(string3), Integer.parseInt(amount));
         Data.increaseBalance(firstCardBalance, Integer.parseInt(amount));
         Data.decreaseBalance(secondCardBalance, Integer.parseInt(amount));
-        DashboardPage.getFirstCardBalance();
-        DashboardPage.getSecondCardBalance();
+        dashboardPage.getFirstCardBalance();
+        dashboardPage.getSecondCardBalance();
     }
 
     @Тогда("баланс его \"{int}\" карты из списка на главной странице должен стать {string} рублей")
     public void verify(int cardId, String string2) {
-        int firstBalance = DashboardPage.getFirstCardBalance();
+        val dashboardPage = new DashboardPage();
+        int firstBalance = dashboardPage.getFirstCardBalance();
         assertEquals(firstBalance, Integer.parseInt(string2));
     }
 }
